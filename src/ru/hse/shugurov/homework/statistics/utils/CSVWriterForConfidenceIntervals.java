@@ -7,11 +7,11 @@ import java.io.*;
 /**
  * Created by Ivan Shugurov on 03.12.2014.
  */
-public class CSVWriter
+public class CSVWriterForConfidenceIntervals
 {
     private static final String SEPARATOR = ";";
 
-    public void createNewCSVFile(String fileName, int numberOfElementsInArray) throws FileNotFoundException
+    public void createFile(String fileName, int numberOfElementsInArray) throws FileNotFoundException
     {
         File file = new File(fileName);
         if (file.exists())
@@ -39,7 +39,7 @@ public class CSVWriter
         }
     }
 
-    public void appendToCSVFile(String fileName, double[] array, ConfidenceInterval confidenceInterval, boolean expectedValueWithinInterval) throws IOException
+    public void appendToFile(String fileName, double[] array, ConfidenceInterval confidenceInterval, boolean expectedValueWithinInterval) throws IOException
     {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true))))
         {

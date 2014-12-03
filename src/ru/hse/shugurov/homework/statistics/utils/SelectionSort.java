@@ -3,7 +3,7 @@ package ru.hse.shugurov.homework.statistics.utils;
 /**
  * Created by Ivan on 03.12.2014.
  */
-public class SelectionSort implements SortingAlhorithm
+public class SelectionSort implements SortingAlgorithm
 {
     @Override
     public int sort(double[] array)

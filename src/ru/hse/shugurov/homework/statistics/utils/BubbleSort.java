@@ -3,7 +3,7 @@ package ru.hse.shugurov.homework.statistics.utils;
 /**
  * Created by Ivan Shugurov on 03.12.2014.
  */
-public class BubbleSort implements SortingAlhorithm
+public class BubbleSort implements SortingAlgorithm
 {
     @Override
     public int sort(double[] array)

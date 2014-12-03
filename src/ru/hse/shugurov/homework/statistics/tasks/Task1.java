@@ -4,7 +4,7 @@ import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
-import ru.hse.shugurov.homework.statistics.utils.CSVWriter;
+import ru.hse.shugurov.homework.statistics.utils.CSVWriterForConfidenceIntervals;
 
 import java.io.IOException;
 import java.util.Random;
@@ -17,7 +17,7 @@ public class Task1
     private static final Random random = new Random();
     private static final double UNIFORM_EXPECTED_VALUE = 3;
     public static final double NORMAL_EXPECTED_VALUE = 0;
-    private final CSVWriter csvWriter = new CSVWriter();
+    private final CSVWriterForConfidenceIntervals csvWriter = new CSVWriterForConfidenceIntervals();
     private static final Task1 task1 = new Task1();
     private static final int ARRAY_LENGTH = 10;
 
@@ -77,7 +77,7 @@ public class Task1
         {
             fileName = numberOfExperiments + "_experiments_normal_distribution.csv";
         }
-        task1.csvWriter.createNewCSVFile(fileName, arrayLength);
+        task1.csvWriter.createFile(fileName, arrayLength);
         for (int i = 0; i < numberOfExperiments; i++)
         {
             double[] array;
@@ -99,7 +99,7 @@ public class Task1
             {
                 expectedValueWithinConfidenceInterval = confidenceInterval.isValueWithinInterval(NORMAL_EXPECTED_VALUE);
             }
-            task1.csvWriter.appendToCSVFile(fileName, array, confidenceInterval, expectedValueWithinConfidenceInterval);
+            task1.csvWriter.appendToFile(fileName, array, confidenceInterval, expectedValueWithinConfidenceInterval);
         }
     }
 
