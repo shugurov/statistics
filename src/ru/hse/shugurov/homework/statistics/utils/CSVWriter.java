@@ -1,4 +1,6 @@
-package ru.hse.shugurov.homework.statistics;
+package ru.hse.shugurov.homework.statistics.utils;
+
+import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
 
 import java.io.*;
 

@@ -1,4 +1,4 @@
-package ru.hse.shugurov.homework.statistics;
+package ru.hse.shugurov.homework.statistics.model;
 
 /**
  * Created by Ivan Shugurov on 02.12.2014.

@@ -1,9 +1,10 @@
-package ru.hse.shugurov.homework.statistics;
+package ru.hse.shugurov.homework.statistics.model;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
 
 import static junit.framework.TestCase.assertEquals;
 

@@ -1,10 +1,12 @@
-package ru.hse.shugurov.homework.statistics;
+package ru.hse.shugurov.homework.statistics.tasks;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
+import ru.hse.shugurov.homework.statistics.tasks.Task1;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

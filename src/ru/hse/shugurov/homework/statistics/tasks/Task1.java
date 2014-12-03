@@ -1,9 +1,11 @@
-package ru.hse.shugurov.homework.statistics;
+package ru.hse.shugurov.homework.statistics.tasks;
 
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+import ru.hse.shugurov.homework.statistics.utils.CSVWriter;
+import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
 
 import java.io.IOException;
 import java.util.Random;
@@ -22,7 +24,7 @@ public class Task1
 
     public static void main(String[] args)
     {
-        try
+        /*try
         {
             evaluate(ARRAY_LENGTH, 1);
         } catch (IOException e)
@@ -37,7 +39,7 @@ public class Task1
         {
             e.printStackTrace();
             System.out.println("Ну удалось выполнить для 1000 экспериментов");
-        }
+        }  */
     }
 
     private static void evaluate(int arrayLength, int numberOfExperiments) throws IOException
