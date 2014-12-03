@@ -28,7 +28,7 @@ public class Task1
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 10 значений");
+            System.out.println("Ну удалось выполнить для 10 экспериментов");
         }
         try
         {
@@ -36,20 +36,21 @@ public class Task1
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 1000 значений");
+            System.out.println("Ну удалось выполнить для 1000 экспериментов");
         }
     }
 
     private static void evaluate(int arrayLength, int numberOfExperiments) throws IOException
     {
-        task1.csvWriter.createNewCSVFile(numberOfExperiments + "_experiments.csv", arrayLength);
+        String fileName = numberOfExperiments + "_experiments.csv";
+        task1.csvWriter.createNewCSVFile(fileName, arrayLength);
         for (int i = 0; i < numberOfExperiments; i++)
         {
             double[] array = task1.generateArrayFromRange(arrayLength);
             TDistribution tDistribution = new TDistribution(array.length - 1);
             ConfidenceInterval confidenceInterval = task1.countConfidenceIntervalForExpectedValueUsingTDistribution(tDistribution, array, 0.1);
             boolean expectedValueWithinConfidenceInterval = confidenceInterval.isValueWithinInterval(EXPECTED_VALUE);
-            task1.csvWriter.appendToCSVFile(numberOfExperiments + "_experiments.csv", array, confidenceInterval, expectedValueWithinConfidenceInterval);
+            task1.csvWriter.appendToCSVFile(fileName, array, confidenceInterval, expectedValueWithinConfidenceInterval);
         }
     }
 
