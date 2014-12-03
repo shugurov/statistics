@@ -1,9 +1,11 @@
 package ru.hse.shugurov.homework.statistics;
 
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
+import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -12,6 +14,44 @@ import java.util.Random;
 public class Task1
 {
     private static final Random random = new Random();
+    private static final double EXPECTED_VALUE = 3;
+    private final CSVWriter csvWriter = new CSVWriter();
+    private static final Task1 task1 = new Task1();
+    private static final int ARRAY_LENGTH = 10;
+
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            evaluate(ARRAY_LENGTH, 1);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Ну удалось выполнить для 10 значений");
+        }
+        try
+        {
+            evaluate(ARRAY_LENGTH, 1000);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Ну удалось выполнить для 1000 значений");
+        }
+    }
+
+    private static void evaluate(int arrayLength, int numberOfExperiments) throws IOException
+    {
+        task1.csvWriter.createNewCSVFile(numberOfExperiments + "_experiments.csv", arrayLength);
+        for (int i = 0; i < numberOfExperiments; i++)
+        {
+            double[] array = task1.generateArrayFromRange(arrayLength);
+            TDistribution tDistribution = new TDistribution(array.length - 1);
+            ConfidenceInterval confidenceInterval = task1.countConfidenceIntervalForExpectedValueUsingTDistribution(tDistribution, array, 0.1);
+            boolean expectedValueWithinConfidenceInterval = confidenceInterval.isValueWithinInterval(EXPECTED_VALUE);
+            task1.csvWriter.appendToCSVFile(numberOfExperiments + "_experiments.csv", array, confidenceInterval, expectedValueWithinConfidenceInterval);
+        }
+    }
 
 
     private double[] generateArrayFromRange(int arrayLength)
@@ -47,6 +87,5 @@ public class Task1
         Mean mean = new Mean();
         return mean.evaluate(array);
     }
-
 
 }
