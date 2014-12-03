@@ -24,11 +24,10 @@ public class Task1
         return array;
     }
 
-    private ConfidenceInterval countConfidenceIntervalForExpectedValueUsingTDistribution(AbstractRealDistribution distribution, double[] array, double significance)
+    public ConfidenceInterval countConfidenceIntervalForExpectedValueUsingTDistribution(AbstractRealDistribution distribution, double[] array, double significance)
     {
         double mean = assesMeanValue(array);
         double standardDeviation = assesStandardDeviation(array, mean);
-        //AbstractRealDistribution distribution = new TDistribution(array.length);
         double z = distribution.inverseCumulativeProbability(1 - significance / 2);
         double val = z * standardDeviation / Math.sqrt(array.length);
         double lowerEndpoint = mean - val;
