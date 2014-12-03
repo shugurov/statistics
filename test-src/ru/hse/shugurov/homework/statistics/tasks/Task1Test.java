@@ -2,15 +2,14 @@ package ru.hse.shugurov.homework.statistics.tasks;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.apache.commons.math3.distribution.TDistribution;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
-import ru.hse.shugurov.homework.statistics.tasks.Task1;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnitParamsRunner.class)
@@ -58,8 +57,7 @@ public class Task1Test
     public void testConfidenceInterval()
     {
         double[] array = {1, 2, 3};
-        TDistribution distribution = new TDistribution(array.length - 1);
-        ConfidenceInterval confidenceInterval = task1.countConfidenceIntervalForExpectedValueUsingTDistribution(distribution, array, 0.1);
+        ConfidenceInterval confidenceInterval = task1.countConfidenceIntervalForExpectedValueUsingTDistribution(array, 0.1);
         assertEquals(0.314, confidenceInterval.getLowerEndpoint(), 0.001);
         assertEquals(3.685, confidenceInterval.getUpperEndpoint(), 0.001);
     }

@@ -1,11 +1,10 @@
 package ru.hse.shugurov.homework.statistics.tasks;
 
-import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import ru.hse.shugurov.homework.statistics.utils.CSVWriter;
 import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
+import ru.hse.shugurov.homework.statistics.utils.CSVWriter;
 
 import java.io.IOException;
 import java.util.Random;
@@ -16,7 +15,8 @@ import java.util.Random;
 public class Task1
 {
     private static final Random random = new Random();
-    private static final double EXPECTED_VALUE = 3;
+    private static final double UNIFORM_EXPECTED_VALUE = 3;
+    public static final double NORMAL_EXPECTED_VALUE = 0;
     private final CSVWriter csvWriter = new CSVWriter();
     private static final Task1 task1 = new Task1();
     private static final int ARRAY_LENGTH = 10;
@@ -24,34 +24,81 @@ public class Task1
 
     public static void main(String[] args)
     {
-        /*try
+        try
         {
-            evaluate(ARRAY_LENGTH, 1);
+            evaluate(ARRAY_LENGTH, 1, true);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 10 экспериментов");
+            System.out.println("Ну удалось выполнить для 11 эксперимента с равномерным распределением");
         }
         try
         {
-            evaluate(ARRAY_LENGTH, 1000);
+            evaluate(ARRAY_LENGTH, 400, true);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 1000 экспериментов");
-        }  */
+            System.out.println("Ну удалось выполнить для 400 экспериментов c равномерным распределением");
+        }
+        try
+        {
+            evaluate(ARRAY_LENGTH, 400, false);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Ну удалось выполнить для 400 экспериментов c нормальным распределением");
+        }
+        try
+        {
+            evaluate(ARRAY_LENGTH, 1000, true);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Ну удалось выполнить для 1000 экспериментов c равномерным распределением");
+        }
+        try
+        {
+            evaluate(ARRAY_LENGTH, 1000, false);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Ну удалось выполнить для 1000 экспериментов c нормальным распределением");
+        }
     }
 
-    private static void evaluate(int arrayLength, int numberOfExperiments) throws IOException
+    private static void evaluate(int arrayLength, int numberOfExperiments, boolean uniformlyDistributedArray) throws IOException
     {
-        String fileName = numberOfExperiments + "_experiments.csv";
+        String fileName;
+        if (uniformlyDistributedArray)
+        {
+            fileName = numberOfExperiments + "_experiments_uniform_distribution.csv";
+        }
+        else
+        {
+            fileName = numberOfExperiments + "_experiments_normal_distribution.csv";
+        }
         task1.csvWriter.createNewCSVFile(fileName, arrayLength);
         for (int i = 0; i < numberOfExperiments; i++)
         {
-            double[] array = task1.generateArrayFromRange(arrayLength);
-            TDistribution tDistribution = new TDistribution(array.length - 1);
-            ConfidenceInterval confidenceInterval = task1.countConfidenceIntervalForExpectedValueUsingTDistribution(tDistribution, array, 0.1);
-            boolean expectedValueWithinConfidenceInterval = confidenceInterval.isValueWithinInterval(EXPECTED_VALUE);
+            double[] array;
+            if (uniformlyDistributedArray)
+            {
+                array = task1.generateArrayFromRange(arrayLength);
+            }
+            else
+            {
+                array = task1.generateNormallyDistributedArray(arrayLength);
+            }
+            ConfidenceInterval confidenceInterval = task1.countConfidenceIntervalForExpectedValueUsingTDistribution(array, 0.1);
+            boolean expectedValueWithinConfidenceInterval;
+            if (uniformlyDistributedArray)
+            {
+                expectedValueWithinConfidenceInterval = confidenceInterval.isValueWithinInterval(UNIFORM_EXPECTED_VALUE);
+            }
+            else
+            {
+                expectedValueWithinConfidenceInterval = confidenceInterval.isValueWithinInterval(NORMAL_EXPECTED_VALUE);
+            }
             task1.csvWriter.appendToCSVFile(fileName, array, confidenceInterval, expectedValueWithinConfidenceInterval);
         }
     }
@@ -67,10 +114,21 @@ public class Task1
         return array;
     }
 
-    public ConfidenceInterval countConfidenceIntervalForExpectedValueUsingTDistribution(AbstractRealDistribution distribution, double[] array, double significance)
+    private double[] generateNormallyDistributedArray(int arrayLength)
+    {
+        double[] array = new double[arrayLength];
+        for (int i = 0; i < array.length; i++)
+        {
+            array[i] = random.nextGaussian();
+        }
+        return array;
+    }
+
+    public ConfidenceInterval countConfidenceIntervalForExpectedValueUsingTDistribution(double[] array, double significance)
     {
         double mean = assesMeanValue(array);
         double standardDeviation = assesStandardDeviation(array, mean);
+        TDistribution distribution = new TDistribution(array.length - 1);
         double z = distribution.inverseCumulativeProbability(1 - significance / 2);
         double val = z * standardDeviation / Math.sqrt(array.length);
         double lowerEndpoint = mean - val;
