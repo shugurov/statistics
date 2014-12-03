@@ -10,6 +10,10 @@ public class ConfidenceInterval
 
     public ConfidenceInterval(double lowerEndpoint, double upperEndpoint)
     {
+        if (upperEndpoint < lowerEndpoint)
+        {
+            throw new IllegalArgumentException();
+        }
         this.lowerEndpoint = lowerEndpoint;
         this.upperEndpoint = upperEndpoint;
     }
