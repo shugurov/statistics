@@ -19,50 +19,44 @@ public class Task1
     public static final double NORMAL_EXPECTED_VALUE = 0;
     private final CSVWriterForConfidenceIntervals csvWriter = new CSVWriterForConfidenceIntervals();
     private static final Task1 task1 = new Task1();
-    private static final int ARRAY_LENGTH = 10;
 
 
     public static void main(String[] args)
     {
         try
         {
-            evaluate(ARRAY_LENGTH, 1, true);
+            evaluate(10, 1, true);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 11 эксперимента с равномерным распределением");
         }
         try
         {
-            evaluate(ARRAY_LENGTH, 400, true);
+            evaluate(10, 1000, true);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 400 экспериментов c равномерным распределением");
         }
         try
         {
-            evaluate(ARRAY_LENGTH, 400, false);
+            evaluate(10, 1000, false);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 400 экспериментов c нормальным распределением");
         }
         try
         {
-            evaluate(ARRAY_LENGTH, 1000, true);
+            evaluate(400, 1000, true);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 1000 экспериментов c равномерным распределением");
         }
         try
         {
-            evaluate(ARRAY_LENGTH, 1000, false);
+            evaluate(400, 1000, false);
         } catch (IOException e)
         {
             e.printStackTrace();
-            System.out.println("Ну удалось выполнить для 1000 экспериментов c нормальным распределением");
         }
     }
 
@@ -71,11 +65,11 @@ public class Task1
         String fileName;
         if (uniformlyDistributedArray)
         {
-            fileName = numberOfExperiments + "_experiments_uniform_distribution.csv";
+            fileName = arrayLength + "_elements_" +numberOfExperiments + "_experiments_uniform_distribution.csv";
         }
         else
         {
-            fileName = numberOfExperiments + "_experiments_normal_distribution.csv";
+            fileName = arrayLength + "_elements_" +numberOfExperiments + "_normal_distribution.csv";
         }
         task1.csvWriter.createFile(fileName, arrayLength);
         for (int i = 0; i < numberOfExperiments; i++)
