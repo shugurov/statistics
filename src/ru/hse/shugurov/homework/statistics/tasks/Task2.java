@@ -2,14 +2,13 @@ package ru.hse.shugurov.homework.statistics.tasks;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 import ru.hse.shugurov.homework.statistics.utils.BubbleSort;
 import ru.hse.shugurov.homework.statistics.utils.CSVWriterForSortingInformation;
 import ru.hse.shugurov.homework.statistics.utils.SelectionSort;
-import ru.hse.shugurov.homework.statistics.utils.SortingAlgorithm;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -28,47 +27,50 @@ public class Task2
         try
         {
             task2.csvWriter.createFile("report.csv", NUMBER_OF_EXPERIMENTS);
+            task2.evaluate();
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
             System.out.println("Не удалось создать файл");
             return;
         }
-        int[] numberOfStepsForSelectionSort = task2.evaluate(new SelectionSort());
-        int[] umberOfStepsForBubbleSort = task2.evaluate(new BubbleSort());
     }
 
-    private int[] evaluate(SortingAlgorithm sortingAlgorithm) throws IOException
+    private void evaluate() throws IOException
     {
-        int[] numberOfSteps = new int[NUMBER_OF_EXPERIMENTS];
-        sort(numberOfSteps, sortingAlgorithm);
 
-        double[] doubleCopyOfNumberOfSteps = new double[NUMBER_OF_EXPERIMENTS];
-        for (int i = 0; i < NUMBER_OF_EXPERIMENTS; i++)
+        int[][] totalResult = new int[3][NUMBER_OF_EXPERIMENTS];
+        sort(totalResult);
+        for (int[] resultArray : totalResult)
         {
-            doubleCopyOfNumberOfSteps[i] = numberOfSteps[i];
+            double[] doubleCopyOfNumberOfSteps = new double[NUMBER_OF_EXPERIMENTS];
+            for (int i = 0; i < NUMBER_OF_EXPERIMENTS; i++)
+            {
+                doubleCopyOfNumberOfSteps[i] = resultArray[i];
+            }
+
+            Mean meanEvaluator = new Mean();
+            double mean = meanEvaluator.evaluate(doubleCopyOfNumberOfSteps);
+
+            StandardDeviation standardDeviationEvaluator = new StandardDeviation(true);
+            double standardDeviation = standardDeviationEvaluator.evaluate(doubleCopyOfNumberOfSteps);
+
+            csvWriter.appendToFile("report.csv", resultArray, mean, standardDeviation);
         }
 
-        Mean meanEvaluator = new Mean();
-        double mean = meanEvaluator.evaluate(doubleCopyOfNumberOfSteps);
-
-        StandardDeviation standardDeviationEvaluator = new StandardDeviation(true);
-        double standardDeviation = standardDeviationEvaluator.evaluate(doubleCopyOfNumberOfSteps);
-
-        Percentile percentileEvaluator = new Percentile();
-        double percentile5 = percentileEvaluator.evaluate(doubleCopyOfNumberOfSteps, 5);
-        double percentile95 = percentileEvaluator.evaluate(doubleCopyOfNumberOfSteps, 95);
-
-        csvWriter.appendToFile("report.csv", numberOfSteps, mean, standardDeviation, percentile5, percentile95);
-        return numberOfSteps;
     }
 
-    private void sort(int[] stepsArray, SortingAlgorithm algorithm)
+    private void sort(int[][] stepsArray)
     {
+        SelectionSort selectionSort = new SelectionSort();
+        BubbleSort bubbleSort = new BubbleSort();
         for (int experimentNumber = 0; experimentNumber < NUMBER_OF_EXPERIMENTS; experimentNumber++)
         {
             double[] arrayToBeSorted = generateArray(ARRAY_LENGTH);
-            stepsArray[experimentNumber] = algorithm.sort(arrayToBeSorted);
+            double[] arrayToBeSorted2 = Arrays.copyOf(arrayToBeSorted, arrayToBeSorted.length);
+            stepsArray[0][experimentNumber] = selectionSort.sort(arrayToBeSorted);
+            stepsArray[1][experimentNumber] = bubbleSort.sort(arrayToBeSorted2);
+            stepsArray[2][experimentNumber] = stepsArray[0][experimentNumber] - stepsArray[1][experimentNumber];
         }
     }
 
@@ -82,9 +84,4 @@ public class Task2
         return array;
     }
 
-    public double evaluatePercentile(double[] array, double p)
-    {
-        Percentile percentile = new Percentile(p);
-        return percentile.evaluate(array);
-    }
 }

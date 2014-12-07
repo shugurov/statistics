@@ -133,7 +133,7 @@ public class Task1
         double val = z * standardDeviation / Math.sqrt(array.length);
         double lowerEndpoint = mean - val;
         double upperEndpoint = mean + val;
-        ConfidenceInterval confidenceInterval = new ConfidenceInterval(lowerEndpoint, upperEndpoint);
+        ConfidenceInterval confidenceInterval = new ConfidenceInterval(lowerEndpoint, upperEndpoint, mean, standardDeviation);
         return confidenceInterval;
     }
 

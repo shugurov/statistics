@@ -27,6 +27,11 @@ public class CSVWriterForConfidenceIntervals
                 writer.print(SEPARATOR);
             }
 
+            writer.write("Mean");
+            writer.write(SEPARATOR);
+            writer.write("Standard deviation");
+            writer.write(SEPARATOR);
+
             writer.write("Lower endpoint of confidence interval");
             writer.write(SEPARATOR);
             writer.write("Upper endpoint of confidence interval");
@@ -39,7 +44,7 @@ public class CSVWriterForConfidenceIntervals
         }
     }
 
-    public void appendToFile(String fileName, double[] array, ConfidenceInterval confidenceInterval, boolean expectedValueWithinInterval) throws IOException
+    public void appendToFile(String fileName, double[] array,ConfidenceInterval confidenceInterval, boolean expectedValueWithinInterval) throws IOException
     {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true))))
         {
@@ -48,6 +53,11 @@ public class CSVWriterForConfidenceIntervals
                 writer.print(value);
                 writer.print(SEPARATOR);
             }
+
+            writer.print(confidenceInterval.getMean());
+            writer.print(SEPARATOR);
+            writer.print(confidenceInterval.getStandardDeviation());
+            writer.print(SEPARATOR);
 
             writer.print(confidenceInterval.getLowerEndpoint());
             writer.print(SEPARATOR);

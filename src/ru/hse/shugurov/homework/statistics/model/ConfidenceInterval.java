@@ -7,15 +7,19 @@ public class ConfidenceInterval
 {
     private final double lowerEndpoint;
     private final double upperEndpoint;
+    private final double mean;
+    private final double standardDeviation;
 
-    public ConfidenceInterval(double lowerEndpoint, double upperEndpoint)
+    public ConfidenceInterval(double lowerEndpoint, double upperEndpoint, double mean, double standardDeviation)
     {
+        this.standardDeviation = standardDeviation;
         if (upperEndpoint < lowerEndpoint)
         {
             throw new IllegalArgumentException();
         }
         this.lowerEndpoint = lowerEndpoint;
         this.upperEndpoint = upperEndpoint;
+        this.mean = mean;
     }
 
     public double getUpperEndpoint()
@@ -41,4 +45,13 @@ public class ConfidenceInterval
     }
 
 
+    public double getMean()
+    {
+        return mean;
+    }
+
+    public double getStandardDeviation()
+    {
+        return standardDeviation;
+    }
 }

@@ -4,7 +4,6 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ru.hse.shugurov.homework.statistics.model.ConfidenceInterval;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -16,7 +15,7 @@ public class ConfidenceIntervalTest
     @Parameters(method = "provideIntervals")
     public void testIsValueWithinInterval(double lowerBound, double upperBound, double value, boolean expecteResult) throws Exception
     {
-        ConfidenceInterval confidenceInterval = new ConfidenceInterval(lowerBound, upperBound);
+        ConfidenceInterval confidenceInterval = new ConfidenceInterval(lowerBound, upperBound, 0, 0);
         boolean within = confidenceInterval.isValueWithinInterval(value);
         assertEquals(expecteResult, within);
     }
